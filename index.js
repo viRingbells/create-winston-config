@@ -7,9 +7,10 @@ const winston         = require('winston');
 const DailyRotateFile = require('winston-daily-rotate-file');
 
 const DEFAULT_CONFG = {
-    level: 'error',
+    level: 'info',
+    levels: winston.config.npm.levels,
     path: 'logs',
-    logs: ['info', 'warn', 'error'],
+    logs: ['debug', 'info', 'warn', 'error'],
     datePattern: 'YYYYMMDDHH',
     zippedArchive: false,
     maxFiles: '7d',
@@ -30,18 +31,25 @@ function create(config = {}) {
     }
     config.format = format;
     for (const level of config.logs) {
-        transports.push(new DailyRotateFile({
-            ...config,
-            level,
-            filename: path.resolve(logDirectory, level),
-        }));
-    }
-
-    if (process.env.DEBUG) {
-        transports.push(new winston.transports.Console({
-            level: 'debug',
-            format: config.format,
-        }));
+        if (!config.levels.hasOwnProperty(level)) {
+            continue;
+        }
+        if (config.levels[level] > config.levels[config.level]) {
+            continue;
+        }
+        if (level !== 'debug') {
+            transports.push(new DailyRotateFile({
+                ...config,
+                level,
+                filename: path.resolve(logDirectory, level),
+            }));
+        }
+        else {
+            transports.push(new winston.transports.Console({
+                level: 'debug',
+                format: config.format,
+            }));
+        }
     }
 
     const logger  = winston.createLogger({
