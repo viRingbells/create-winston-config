@@ -14,21 +14,20 @@ const DEFAULT_CONFG = {
     datePattern: 'YYYYMMDDHH',
     zippedArchive: false,
     maxFiles: '7d',
-    format: null,
 };
+
+const { combine, timestamp, printf } = winston.format;
 
 function create(config = {}) {
     assert(config instanceof Object, 'Invalid type of config, should be an object');
     config = _.defaultsDeep(config, DEFAULT_CONFG);
     const logDirectory = path.resolve(path.dirname(process.mainModule.filename), config.path);
     const transports = [];
-    let format = winston.format.simple();
-    if (config.format instanceof Function) {
-        format = config.format;
-    }
-    else if ('string' === typeof config.format) {
-        format = _.template(config.format);
-    }
+    const render = printf(o => `${o.timestamp} ${o.level.toUpperCase()}:\t${o.message}`);
+    const format = combine(
+        timestamp(),
+        render
+    );
     config.format = format;
     for (const level of config.logs) {
         if (!config.levels.hasOwnProperty(level)) {
