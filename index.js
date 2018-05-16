@@ -28,7 +28,7 @@ function create(config = {}) {
         timestamp(),
         render
     );
-    config.format = format;
+    config.format = config.format || format;
     for (const level of config.logs) {
         if (!config.levels.hasOwnProperty(level)) {
             continue;
