@@ -1,0 +1,29 @@
+{
+  "name": "create-winston-config",
+  "version": "0.1.0",
+  "description": "Create winston logger with json config",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/viRingbells/create-winston-config.git"
+  },
+  "keywords": [
+    "winston",
+    "logger",
+    "json"
+  ],
+  "author": "Sun Haohao",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/viRingbells/create-winston-config/issues"
+  },
+  "homepage": "https://github.com/viRingbells/create-winston-config#readme",
+  "dependencies": {
+    "lodash": "^4.17.10",
+    "winston": "^3.0.0-rc5",
+    "winston-daily-rotate-file": "^3.1.4"
+  }
+}
