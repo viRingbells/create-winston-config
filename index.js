@@ -22,7 +22,7 @@ function create(config = {}) {
     config = _.defaultsDeep(config, DEFAULT_CONFG);
     const logDirectory = path.resolve(path.dirname(process.mainModule.filename), config.path);
     const transports = [];
-    const format = winston.format.simple();
+    let format = winston.format.simple();
     if (config.format instanceof Function) {
         format = config.format;
     }
