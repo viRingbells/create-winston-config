@@ -24,6 +24,7 @@
   "dependencies": {
     "lodash": "^4.17.10",
     "winston": "^3.0.0-rc5",
-    "winston-daily-rotate-file": "^3.1.4"
+    "winston-daily-rotate-file": "^3.1.4",
+    "winston-transport": "^3.2.1"
   }
 }
