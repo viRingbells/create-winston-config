@@ -1,6 +1,6 @@
 {
   "name": "create-winston-config",
-  "version": "0.3.0",
+  "version": "0.3.2",
   "description": "Create winston logger with json config",
   "main": "index.js",
   "scripts": {
