@@ -2,6 +2,7 @@
 
 const _               = require('lodash');
 const assert          = require('assert');
+const moment          = require('moment');
 const path            = require('path');
 const winston         = require('winston');
 const DailyRotateFile = require('winston-daily-rotate-file');
@@ -14,18 +15,21 @@ const DEFAULT_CONFIG = {
     datePattern: 'YYYYMMDDHH',
     zippedArchive: false,
     maxFiles: '7d',
+    dateFormat: 'YYYY-MM-DD hh:mm:ss',
 };
 
-const { combine, timestamp, printf } = winston.format;
+const { combine, printf } = winston.format;
 
 function create(config = {}) {
     assert(config instanceof Object, 'Invalid type of config, should be an object');
     config = _.defaultsDeep(config, DEFAULT_CONFIG);
     const logDirectory = path.resolve(path.dirname(process.mainModule.filename), config.path);
     const transports = [];
-    const render = printf(o => `${o.timestamp} ${o.level.toUpperCase()}:\t${o.message}`);
+    const render = printf(o => `${o.time} ${o.level.toUpperCase()}:\t${o.message}`);
     const format = combine(
-        timestamp(),
+        winston.format(info => Object.assign(info, {
+            time: moment().format(config.dateFormat).trim()
+        }))(),
         render
     );
     config.format = config.format || format;
